@@ -1,0 +1,13 @@
+<h2>Todos!</h2>
+<div class="todoList">
+    <div ng-repeat="(id, todo) in todos">
+        <input type="text" ng-model="todo.text" ng-change="updateTodo(todo)"/>
+        <!--<select ng-change="updateTodo(todo)" ng-model="todo.category" ng-options="category.label for category in categories"><option value="">Select A Category</option></select>-->
+        <select ng-change="updateTodo(todo)" ng-model="todo.category">
+            <option value="">Select A Category</option>
+            <option ng-repeat="cat in categories" value="{{cat.$id}}" ng-selected="cat.$id == todo.category">{{cat.label}}</option>
+        </select>
+        <button ng-click="deleteTodo(todo)">&#x2716;</button>
+    </div>
+    <button ng-click="newItem()">New item</button>
+</div>

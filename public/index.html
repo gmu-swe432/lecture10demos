@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="demoApp">
+<head>
+    <meta charset="UTF-8">
+    <title>My Angular Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.0.2/angularfire.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+<style>
+    body {
+        background-image: url("todopile.jpg");
+    }
+    .container {
+        background-color: rgba(255,255,255,.9);
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Super Sweet Todo App</h1>
+    <div data-ng-view></div>
+    <div><a href="#/">View Todos</a> | <a href="#/categories">View Categories</a></div>
+</div>
+
+<script>
+    "use strict";
+    var config = {
+        apiKey: "AIzaSyBgPHiUhiub1pq_anz2IVTWlC_Y19AXhSQ",
+        authDomain: "swe432foobar.firebaseapp.com",
+        databaseURL: "https://swe432foobar.firebaseio.com",
+        storageBucket: "swe432foobar.appspot.com",
+        messagingSenderId: "275251107"
+    };
+    firebase.initializeApp(config);
+    function TodoController($scope, $location, $firebaseArray) {
+        var fireRef = firebase.database().ref('todos');
+        $scope.todos = $firebaseArray(fireRef);
+        $scope.categories = $firebaseArray(firebase.database().ref('categories'));
+        $scope.newItem = function () {
+            fireRef.push({"text": "", "category":""});
+        };
+        $scope.updateTodo = function(todo){
+                $scope.todos.$save(todo);
+        }
+        $scope.deleteTodo = function(todo){
+            $scope.todos.$remove(todo);
+        }
+    }
+    function CategoryController($scope, $location, $firebaseArray){
+        var fireRef = firebase.database().ref('categories');
+        $scope.categories = $firebaseArray(fireRef);
+        $scope.todos = $firebaseArray(fireRef);
+        $scope.newItem = function () {
+            fireRef.push({"label": ""});
+        };
+        $scope.updateCategory = function(cat){
+            $scope.categories.$save(cat);
+        }
+        $scope.deleteCategory = function(cat){
+            $scope.categories.$remove(cat);
+        }
+    }
+    var myApp = angular.module('demoApp', ['firebase','ngRoute']);
+    myApp.controller("TodoController", TodoController);
+    myApp.controller("CategoryController", CategoryController);
+    myApp.config(function($routeProvider){
+        $routeProvider.when("/",{
+            controller: "TodoController",
+            templateUrl: "partials/editableTodos.html"
+        }).when("/categories",{
+            controller: "CategoryController",
+            templateUrl: "partials/categories.html"
+        }).otherwise({redirectTo: "/"});
+    });
+</script>
+
+</body>
+</html>

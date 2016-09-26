@@ -1,0 +1,8 @@
+<h2>Categories</h2>
+<div class="todoList" data-ng-controller="CategoryController">
+    <div ng-repeat="(id, cat) in categories">
+        <input type="text" ng-model="cat.label" ng-change="updateCategory(cat)"/>
+        <button ng-click="deleteCategory(cat)">&#x2716;</button>
+    </div>
+    <button ng-click="newItem()">New item</button>
+</div>
