@@ -1,0 +1,19 @@
+<!DOCTYPE html> 
+<html lang="en" ng-app> 
+<head> 
+    <meta charset="UTF-8">
+      <title>My Angular Demo</title> 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+      
+</head>
+ 
+<body> 
+<div data-ng-init="names=['Alice', 'Bob', 'Carla', 'Dave']">
+    <label for="reverseBox">Reverse?</label><input type="checkbox" ng-model="shouldReverse" id="reverseBox"/>
+    <ul>
+        <li ng-repeat="name in names | orderBy:reverse:shouldReverse">Hello, {{ name }}!!!</li>
+    </ul>
+</div>
+</body>
+ 
+</html>

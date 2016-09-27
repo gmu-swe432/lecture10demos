@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="demoApp">
+<head>
+    <meta charset="UTF-8">
+    <title>My Angular Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.0.2/angularfire.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+</head>
+<body>
+
+<div class="container" data-ng-controller="TodoController">
+    <h1>Super Sweet Todo App</h1>
+    <div class="todoList">
+        <div ng-repeat="(id, todo) in todos">
+            <input type="text" ng-model="todo.text" ng-change="updateTodo(todo)"/>
+            <button ng-click="deleteTodo(todo)">&#x2716;</button>
+        </div>
+        <button ng-click="newItem()">New item</button>
+    </div></div>
+
+<script>
+    "use strict";
+    var config = {
+        apiKey: "AIzaSyBgPHiUhiub1pq_anz2IVTWlC_Y19AXhSQ",
+        authDomain: "swe432foobar.firebaseapp.com",
+        databaseURL: "https://swe432foobar.firebaseio.com",
+        storageBucket: "swe432foobar.appspot.com",
+        messagingSenderId: "275251107"
+    };
+    firebase.initializeApp(config);
+    function TodoController($scope, $location, $firebaseArray) {
+        var fireRef = firebase.database().ref('todos');
+        $scope.todos = $firebaseArray(fireRef);
+        $scope.newItem = function () {
+            fireRef.push({"text": "", "category":""});
+        };
+        $scope.updateTodo = function(todo){
+            $scope.todos.$save(todo);
+        }
+        $scope.deleteTodo = function(todo){
+            $scope.todos.$remove(todo);
+        }
+    }
+    var myApp = angular.module('demoApp', ['firebase','ngRoute']);
+    myApp.controller("TodoController", TodoController);
+</script>
+
+</body>
+</html>

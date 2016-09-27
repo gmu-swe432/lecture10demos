@@ -1,0 +1,6 @@
+<div data-ng-init="names=['Alice', 'Bob', 'Carla', 'Dave']">
+    <label for="reverseBox">Reverse?</label><input type="checkbox" ng-model="shouldReverse" id="reverseBox"/>
+    <ul>
+        <li ng-repeat="name in names | orderBy:reverse:shouldReverse">Hello, {{ name }}!!!</li>
+    </ul>
+</div>
